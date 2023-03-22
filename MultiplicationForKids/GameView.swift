@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GameView: View {
     @ObservedObject var gameData: GameData
+    @Environment(\.dismiss) var dismiss
     @State private var alertTitle = ""
     @State private var alertMessage = ""
     @State private var showingAlert = false
@@ -50,7 +51,9 @@ struct GameView: View {
                 Text(alertMessage)
             }
             .alert(alertTitle, isPresented: $isGameOver) {
-                NavigationLink("Start new game", destination: ContentView())
+                Button("Start new game") {
+                    dismiss()
+                }
             } message: {
                 Text(alertMessage)
             }
@@ -58,17 +61,17 @@ struct GameView: View {
     }
     
     func startGame() {
-        isGameOver = false
         guard gameData.startNumber < gameData.endNumber else {
             alertTitle = "Wrong numbers"
             alertMessage = "Start number can't be greater end number"
+            //maybe error
+            isGameOver = false
             return
         }
         gameData.roundCount += 1
         
         randomNumber1 = Int.random(in: Int(gameData.startNumber)...Int(gameData.endNumber))
         randomNumber2 = Int.random(in: Int(gameData.startNumber)...Int(gameData.endNumber))
-        
     }
     
     func nextRound() {
@@ -77,12 +80,6 @@ struct GameView: View {
             isGameOver = true
             return
         }
-        
-        gameData.roundCount += 1
-        
-        randomNumber1 = Int.random(in: Int(gameData.startNumber)...Int(gameData.endNumber))
-        randomNumber2 = Int.random(in: Int(gameData.startNumber)...Int(gameData.endNumber))
-        
         
         let correctAnswer = randomNumber1 * randomNumber2
         
@@ -96,6 +93,12 @@ struct GameView: View {
         }
         haveAnswer = true
         answer = ""
+        
+        gameData.roundCount += 1
+        
+        randomNumber1 = Int.random(in: Int(gameData.startNumber)...Int(gameData.endNumber))
+        randomNumber2 = Int.random(in: Int(gameData.startNumber)...Int(gameData.endNumber))
+        
     }
     
     func endGame() {

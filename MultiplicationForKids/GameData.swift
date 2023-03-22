@@ -11,7 +11,6 @@ class GameData: ObservableObject {
     @Published var startNumber = 1.0
     @Published var endNumber = 1.0
     @Published var rounds = 1.0
-    @Published var arrayGameNumbers = [Int]()
     @Published var roundCount = 0
     @Published var score = 0
     
@@ -19,9 +18,5 @@ class GameData: ObservableObject {
         self.startNumber = startNumber
         self.endNumber = endNumber
         self.rounds = rounds
-        
-//        for number in Int(startNumber)...Int(endNumber) {
-//                arrayGameNumbers.append(number)
-//        }
     }
 }
